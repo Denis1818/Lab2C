@@ -10,63 +10,80 @@
 #include <locale>
 
 //  Задание 1 
+// Работа с list: вывод первой трети, второй и последней трети в обратном порядке
 void Task1() {
     int n;
+    // Цикл ввода с проверкой: количество элементов должно быть положительным и кратным 3
     do {
         std::cout << "Задание 1: Введите количество элементов, кратное 3: ";
         std::cin >> n;
     } while (n <= 0 || n % 3 != 0);
 
-    std::list<int> L;
+    std::list<int> L; // создаем список для хранения элементов
     std::cout << "Введите элементы списка: ";
     for (int i = 0; i < n; ++i) {
-        int x; std::cin >> x;
-        L.push_back(x);
+        int x;
+        std::cin >> x;
+        L.push_back(x); // добавляем элементы в конец списка
     }
 
-    int third = n / 3;
-    auto it = L.begin();
+    int third = n / 3; // размер одной трети списка
+    auto it = L.begin(); // обычный итератор для прямого прохода
+
+    // Вывод первой трети элементов
     std::cout << "Первая треть: ";
     for (int i = 0; i < third; ++i, ++it) std::cout << *it << " ";
 
+    // Вывод второй трети в обратном порядке
     std::cout << "\nВторая треть в обратном порядке: ";
-    auto rit = std::next(L.rbegin(), third);
+    auto rit = std::next(L.rbegin(), third); // создаем реверсивный итератор, смещенный на треть с конца
     for (int i = 0; i < third; ++i, ++rit) std::cout << *rit << " ";
 
+    // Вывод последней трети в обратном порядке
     std::cout << "\nПоследняя треть в обратном порядке: ";
-    rit = L.rbegin();
+    rit = L.rbegin(); // реверсивный итератор на конец списка
     for (int i = 0; i < third; ++i, ++rit) std::cout << *rit << " ";
     std::cout << "\n\n";
 }
 
 //  Задание 2 
+// Работа с deque: вставка -1 перед элементами второй половины
 void Task2() {
     int n;
+    // Цикл ввода: проверяем, что количество элементов четное и положительное
     do {
         std::cout << "Задание 2: Введите четное количество элементов дека: ";
         std::cin >> n;
     } while (n <= 0 || n % 2 != 0);
 
-    std::deque<int> D(n);
+    std::deque<int> D(n); // создаем дек нужного размера
     std::cout << "Введите элементы дека: ";
     for (int i = 0; i < n; ++i) std::cin >> D[i];
 
+    // Итератор на середину дека
     auto it = D.begin() + n / 2;
+    // Вставляем -1 перед каждым элементом второй половины
     for (int i = 0; i < n / 2; ++i) it = D.insert(--it, -1);
 
+    // Выводим получившийся дек
     std::cout << "Результирующий дек: ";
     for (int x : D) std::cout << x << " ";
     std::cout << "\n\n";
 }
 
 //  Задание 3 
+// Вставка первой половины дека в начало списка
 void Task3() {
     int m;
     std::cout << "Задание 3: Введите количество элементов списка L: ";
     std::cin >> m;
-    std::list<int> L;
+    std::list<int> L; // создаем список
     std::cout << "Введите элементы списка: ";
-    for (int i = 0; i < m; ++i) { int x; std::cin >> x; L.push_back(x); }
+    for (int i = 0; i < m; ++i) {
+        int x;
+        std::cin >> x;
+        L.push_back(x); // добавляем элементы в список
+    }
 
     int n;
     do {
@@ -74,19 +91,23 @@ void Task3() {
         std::cin >> n;
     } while (n <= 0 || n % 2 != 0);
 
-    std::deque<int> D(n);
+    std::deque<int> D(n); // создаем дек
     std::cout << "Введите элементы дека: ";
     for (int i = 0; i < n; ++i) std::cin >> D[i];
 
+    // Вставляем первую половину дека в начало списка
     L.insert(L.begin(), D.begin(), D.begin() + n / 2);
+    // Удаляем первую половину из дека, так как она уже вставлена в список
     D.erase(D.begin(), D.begin() + n / 2);
 
+    // Выводим обновленный список
     std::cout << "Список L после вставки: ";
     for (int x : L) std::cout << x << " ";
     std::cout << "\n\n";
 }
 
 //  Задание 4 
+// Запись строки в файл через удвоенные ASCII-коды
 void Task4() {
     std::string filename;
     std::cout << "Задание 4: Введите имя файла: ";
@@ -94,16 +115,18 @@ void Task4() {
 
     std::string s;
     std::cout << "Введите строку символов: ";
-    std::cin >> s;
+    std::cin >> s; // считываем строку
 
-    std::ofstream out(filename);
-    for (char c : s) out << int(c) * 2 << " ";
-    out.close();
+    std::ofstream out(filename); // открываем файл для записи
+    for (char c : s)
+        out << int(c) * 2 << " "; // записываем удвоенные ASCII-коды символов через пробел
+    out.close(); // закрываем файл
 
     std::cout << "Данные записаны в файл " << filename << "\n\n";
 }
 
 //  Задание 5 
+// Дублирование последнего элемента списка, который есть в первой половине вектора
 void Task5() {
     int n;
     do {
@@ -115,25 +138,26 @@ void Task5() {
     std::cout << "Введите элементы вектора: ";
     for (int i = 0; i < n; ++i) std::cin >> V[i];
 
-    std::cin.ignore(); // Очистка буфера
+    std::cin.ignore(); 
     std::list<int> L;
     std::cout << "Введите элементы списка L через пробел (Enter для окончания): ";
     std::string line;
-    std::getline(std::cin, line);
+    std::getline(std::cin, line); // считываем всю строку с числами
     std::istringstream iss(line);
     int x;
-    while (iss >> x) L.push_back(x);
+    while (iss >> x) L.push_back(x); // заполняем список
 
     // Находим последний элемент списка, который есть в первой половине вектора
     auto it_last = L.end();
     for (auto it = L.begin(); it != L.end(); ++it) {
         if (std::find(V.begin(), V.begin() + n / 2, *it) != V.begin() + n / 2) {
-            it_last = it;
+            it_last = it; // сохраняем итератор на найденный элемент
         }
     }
 
+    // Если такой элемент найден, дублируем его после него
     if (it_last != L.end()) {
-        L.insert(std::next(it_last), *it_last); // Дублируем после него
+        L.insert(std::next(it_last), *it_last);
     }
 
     std::cout << "Список L после дублирования: ";
@@ -142,6 +166,7 @@ void Task5() {
 }
 
 //  Задание 6 
+// Удаление нулей из второй половины вектора
 void Task6() {
     int n;
     do {
@@ -153,6 +178,7 @@ void Task6() {
     std::cout << "Введите элементы вектора: ";
     for (int i = 0; i < n; ++i) std::cin >> V[i];
 
+    // Используем алгоритм remove + erase: удаляем все нули во второй половине
     auto it = std::remove(V.begin() + n / 2, V.end(), 0);
     V.erase(it, V.end());
 
@@ -162,6 +188,7 @@ void Task6() {
 }
 
 //  Задание 7 
+// Сортировка второй половины вектора и слияние с первой
 void Task7() {
     int n;
     do {
@@ -173,8 +200,8 @@ void Task7() {
     std::cout << "Введите элементы вектора (первая половина уже отсортирована): ";
     for (int i = 0; i < n; ++i) std::cin >> V[i];
 
-    std::sort(V.begin() + n / 2, V.end());
-    std::inplace_merge(V.begin(), V.begin() + n / 2, V.end());
+    std::sort(V.begin() + n / 2, V.end()); // сортируем вторую половину
+    std::inplace_merge(V.begin(), V.begin() + n / 2, V.end()); // сливаем отсортированные половины
 
     std::cout << "Вектор после сортировки и слияния: ";
     for (int x : V) std::cout << x << " ";
@@ -182,21 +209,28 @@ void Task7() {
 }
 
 //  Задание 8 
+// Создание декa из первой буквы одного слова и последней буквы следующего
 void Task8() {
     int n;
     std::cout << "Задание 8: Введите количество слов в списке L: ";
     std::cin >> n;
     std::list<std::string> L;
     std::cout << "Введите слова: ";
-    for (int i = 0; i < n; ++i) { std::string s; std::cin >> s; L.push_back(s); }
+    for (int i = 0; i < n; ++i) {
+        std::string s;
+        std::cin >> s;
+        L.push_back(s); // добавляем слова в список
+    }
 
-    std::deque<std::string> D;
+    std::deque<std::string> D; // создаем дек для результата
     auto it1 = L.begin();
-    auto it2 = std::next(it1);
+    auto it2 = std::next(it1); // итератор на следующий элемент
     for (; it2 != L.end(); ++it1, ++it2) {
+        // Создаем строку из первой буквы текущего слова и последней буквы следующего
         D.push_back(std::string() + (*it1)[0] + (*it2).back());
     }
 
+    // Выводим дек
     std::cout << "Дек D: ";
     for (auto& s : D) std::cout << s << " ";
     std::cout << "\n\n";
@@ -216,14 +250,13 @@ void ShowMenu() {
     std::cout << "Ваш выбор: ";
 }
 
-
-
+// ----------------- Главная функция -----------------
 int main() {
-    setlocale(LC_ALL, "Russian");
+    setlocale(LC_ALL, "Russian"); // поддержка русских символов в консоли
 
     int choice;
     do {
-        ShowMenu();
+        ShowMenu(); // показываем меню
         std::cin >> choice;
         switch (choice) {
         case 1: Task1(); break;
